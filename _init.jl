@@ -2,7 +2,7 @@ import Pkg; Pkg.activate(".")
 
 export @tmp
 
-macro tmp(args::Vector{String})
+macro tmp(args...)
     args = [string(a) for a in args]
     return quote
         evalfile("src/tmp.jl", $(args))

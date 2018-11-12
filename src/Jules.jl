@@ -30,6 +30,4 @@ macro t2(expr::Expr)
     return t2(expr)
 end
 
-export t2
-
 end # module
