@@ -1,13 +1,9 @@
 import Pkg; Pkg.activate(".")
 
-export @tmp
+include("_make_evalfile.jl")
 
-macro tmp(args...)
-    args = [string(a) for a in args]
-    return quote
-        evalfile("src/tmp.jl", $(args))
-    end
-end
+@make_evalfile :tmp
+@make_evalfile :j2
 
 function __init__()
     Pkg.activate(".")
