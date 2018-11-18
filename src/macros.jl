@@ -22,6 +22,10 @@ struct MacroArg{T} <: MacroVal
     value::T
 end
 
+struct MacroSymbol <: MacroVal
+    value::Symbol
+end
+
 struct MacroExpr <: MacroVal
     head::Symbol
     args::Array{MacroVal, 1}
@@ -33,15 +37,19 @@ struct MacroExpr <: MacroVal
 end
 
 MacroVal(arg) = MacroArg(arg)
+MacroVal(arg::Symbol) = MacroSymbol(arg)
 MacroVal(arg::QuoteNode) = MacroArg(arg.value)
 MacroVal(arg::Expr) = MacroExpr(arg)
 
-function Base.show(io::IO, arg::MacroArg)
+function Base.show(io::IO, val::MacroVal)
     indent(io)
-    print(io, "MacroArg(")
-    show(io, arg.value)
-    print(io, ")")
+    # print(io, "$(T)(")
+    Base.show_default(io, val)
+    # print(io, ")")
 end
+
+# Base.show(io::IO, arg::MacroArg) = _show_value(io, MacroArg, arg.value)
+# Base.show(io::IO, arg::MacroSymbol) = _show_value(io, MacroSymbol, arg.value)
 
 function Base.show(io::IO, expr::MacroExpr)
     indent(io)
