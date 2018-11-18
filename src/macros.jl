@@ -28,11 +28,11 @@ function MacroExpr(expr::Expr)
     MacroExpr(type, args)
 end
 
-function Base.show(io::IO, val::MacroVal)
+function Base.show(io::IO, arg::MacroArg{T}) where {T}
     indent(io)
-    # print(io, "$(T)(")
-    Base.show_default(io, val)
-    # print(io, ")")
+    print(io, "MacroArg{$(T)}(")
+    show(io, arg.value)
+    print(io, ")")
 end
 
 # Base.show(io::IO, arg::MacroArg) = _show_value(io, MacroArg, arg.value)
@@ -190,4 +190,46 @@ end
     :call       => CallExpr
 end
 
+@parse Dict(
+    :unknown    => UnknownExpr,
+    :(::)       => TypecastExpr,
+    :(=)        => AssignExpr,
+)
+
 end
+
+#=
+
+function __kvenum(pairs::KvenumPairs)
+    @enum ExprType::UInt8 begin
+        UnknownExpr = 0
+
+        #
+        TypecastExpr
+        AssignExpr
+
+        #
+        TupleExpr
+        CallExpr
+        FunctionExpr
+        BodyExpr
+        BlockExpr
+    end
+
+    __exprtypes = Dict(
+        :unknown    => UnknownExpr,
+        :(::)       => TypecastExpr,
+        :(=)        => AssignExpr,
+
+        :tuple      => TupleExpr,
+        :call       => CallExpr,
+        :function   => FunctionExpr,
+        :body       => BodyExpr,
+        :block      => BlockExpr
+    )
+    # flip
+    __exprsymbols = Dict([ (v, k)
+        for (k, v) in __exprtypes
+    ])
+end
+=#
