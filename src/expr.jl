@@ -14,6 +14,7 @@
 end
 
 __exprtypes = Dict(
+    :unknown    => UnknownExpr,
     :(::)       => TypecastExpr,
     :(=)        => AssignExpr,
 
