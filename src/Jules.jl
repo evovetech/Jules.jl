@@ -7,6 +7,6 @@ include("context.jl")
 include("cmd.jl")
 include("m.jl")
 include("show_expr.jl")
-include("macros.jl")
+include("Macros/Macros.jl")
 
 end # module
