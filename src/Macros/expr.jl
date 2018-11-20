@@ -1,3 +1,8 @@
+using Base: @_pure_meta
+
+struct ExprVal{T} end
+ExprVal(x) = (@_pure_meta; ExprVal{x}())
+
 @enum ExprType::UInt8 begin
     UnknownExpr = 0
 
@@ -12,6 +17,10 @@
     BodyExpr
     BlockExpr
 end
+convert(::ExprVal, e::ExprType) = ExprVal(e)
+
+head(::ExprVal) = :unknown
+express(e) = Expr(head(e))
 
 __exprtypes = Dict(
     :unknown    => UnknownExpr,
@@ -25,9 +34,13 @@ __exprtypes = Dict(
     :block      => BlockExpr
 )
 # flip
-__exprsymbols = Dict([ (v, k)
-    for (k, v) in __exprtypes
+__exprsymbols = Dict([
+    (v, k) for (k, v) in __exprtypes
 ])
+
+for (k, v) in __exprtypes
+    @eval head(::ExprVal{$(v)}) = $(k)
+end
 
 const MaybeExprType = Union{ExprType,Symbol}
 

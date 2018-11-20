@@ -37,7 +37,6 @@ end
 const KvenumPairs{N} = NTuple{N, KvenumPair} where {N}
 KvenumPairs() = ()::KvenumPairs{0}
 KvenumPairs(sym::LineNumberNode) = KvenumPairs()
-KvenumPairs(sym::KvenumPair)::KvenumPairs{1} = (sym,)
 KvenumPairs(sym)::KvenumPairs{1} = (KvenumPair(sym),)
 function KvenumPairs(sym::Expr)
     if sym.head === :block
