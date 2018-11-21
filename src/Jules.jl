@@ -2,7 +2,7 @@ module Jules
 
 include("Log/Log.jl")
 include("context.jl")
-include("Cmd/Cmd.jl")
+include("Command/Command.jl")
 include("Macros/Macros.jl")
 
 #play
