@@ -23,10 +23,17 @@ function sayman2(args...)::String
 end
 =#
 
-@parse @enum_symbol ExprType2::UInt8 begin
-    A = 0
-    B
-    C
+for i in 1:3
+    enum = Meta.parse("@enum_wrap$i")
+    push!(enum.args, :(ExprType2::UInt8))
+    push!(enum.args, :(begin
+        $(Symbol(:A, i)) = 0
+        $(Symbol(:B, i))
+        $(Symbol(:C, i))
+    end))
+    show(enum)
+    println()
+    eval(enum)
 end
 
 @parse @kvenum ExprType3::UInt8 begin
