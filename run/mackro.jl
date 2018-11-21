@@ -1,28 +1,5 @@
 using Jules.Macros
 
-#=
-@parse function sayman(arg1, arg2)::String
-    "arg1=$(arg1), arg2=$(arg2)"
-end
-
-@parse "p1",
-@parse "p2",
-@parse "p3",
-function sayman2(args...)::String
-    io = IOBuffer()
-    print(io, ">>>")
-    for (i, arg) in enumerate(args)
-        if i > 0
-            print(io, ", ")
-        end
-        println(io)
-        print(io, "arg$(i)=", arg)
-    end
-    println(io, "<<<")
-    return String(take!(io))
-end
-=#
-
 for i in 1:3
     enum = Meta.parse("@enum_wrap$i")
     push!(enum.args, :(ExprType2::UInt8))
@@ -31,21 +8,21 @@ for i in 1:3
         $(Symbol(:B, i))
         $(Symbol(:C, i))
     end))
-    show(enum)
-    println()
+    # show(enum)
+    # println()
     eval(enum)
 end
 
-@parse @kvenum ExprType3::UInt8 begin
-    :unknown    => UnknownExpr
-    :call       => CallExpr
+@kvenum ExprType3::UInt8 begin
+    :unknown    => UnknownExpr3
+    :(::)       => TypecastExpr3
+    :(=)        => AssignExpr3
+    :tuple      => TupleExpr3
+    :call       => CallExpr3
+    :function   => FunctionExpr3
+    :body       => BodyExpr3
+    :block      => BlockExpr3
 end
-
-@parse Dict(
-    :unknown    => UnknownExpr,
-    :(::)       => TypecastExpr,
-    :(=)        => AssignExpr,
-)
 
 println(">>>")
 for arg in ARGS

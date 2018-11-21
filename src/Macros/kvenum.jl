@@ -2,9 +2,33 @@
 macro kvenum(T, syms...)
     # enum = Expr(:macrocall, Symbol("@enum"), T)
     pairs = KvenumPairs(syms...)
-    toplevel(pairs)
+    enum = :(@enum $T)
+    for (sym, T2) in pairs
+        push!(enum.args, T2)
+    end
+    blk = Expr(:block)
+    push!(blk.args, esc(enum))
+
+    # types = :(__exprtypes = Dict($pairs))
+    # push!(blk.args, esc(types))
+
+    type = T
+    if isa(T, Expr) && T.head === :(::)
+        type = T.args[1]
+    end
+
+    for (sym, T2) in pairs
+        expr = :(Macros.head(::Macros.ExprVal{$(esc(T2))}) = $(esc(sym)))
+        push!(blk.args, expr)
+    end
+
+    head = :(@inline Macros.head(e::$(esc(type))) = Macros.head(Macros.ExprVal(e)))
+    push!(blk.args, head)
+
     # show(pairs)
     # nothing
+    show(macroexpand(__module__, blk))
+    blk
 end
 
 const KvenumArg = Union{QuoteNode,Symbol}
