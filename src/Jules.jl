@@ -1,12 +1,11 @@
 module Jules
 
-include("log.jl")
-include("greet.jl")
-include("t2.jl")
+include("Log/Log.jl")
 include("context.jl")
-include("cmd.jl")
-include("m.jl")
-include("show_expr.jl")
+include("Cmd/Cmd.jl")
 include("Macros/Macros.jl")
+
+#play
+include("Play/Play.jl")
 
 end # module

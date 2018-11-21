@@ -1,4 +1,4 @@
-import Jules: @t2
+import Jules.Play: @t2
 
 @t2 "notes",
 function sayman()

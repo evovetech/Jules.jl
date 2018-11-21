@@ -1,4 +1,3 @@
-
 mutable struct Context
     counter::Integer
 end

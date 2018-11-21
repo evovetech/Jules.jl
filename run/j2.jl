@@ -1,6 +1,7 @@
 #!/usr/bin/env julia
 
-using Jules: @m, @show_expr, withcontext
+using Jules: withcontext
+using Jules.Play: @m, @show_expr
 
 function main(args::Array{String,1}; d="kwd")
     print("args: ")
