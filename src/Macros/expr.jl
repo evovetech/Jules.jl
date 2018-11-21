@@ -20,7 +20,7 @@ end
 convert(::ExprVal, e::ExprType) = ExprVal(e)
 
 head(::ExprVal) = :unknown
-express(e) = Expr(head(e))
+express(@nospecialize(e)) = Expr(head(e))
 
 __exprtypes = Dict(
     :unknown    => UnknownExpr,

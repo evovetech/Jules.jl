@@ -18,9 +18,5 @@ function Base.push!(expr::Expr, sym::Expr)
 end
 
 macro enum_symbol(T, syms...)
-    enum = macrocall("enum", T)
-    for sym in syms
-        push!(enum, sym)
-    end
-    toplevel(enum)
+    esc(:($(Expr(:macrocall, Symbol("@enum"), __source__, T, syms...))))
 end
