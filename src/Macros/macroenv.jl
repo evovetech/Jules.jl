@@ -27,12 +27,11 @@ macroenv!(env::MacroEnv) = macroenv!(env.mod, env.src)
 
 macro macroenv!()
     env = MacroEnv(__module__, __source__)
-    expr = :(Macros.macroenv!($env))
     esc(quote
         if @isdefined __module__
             Macros.macroenv!(__module__, __source__)
         else
-            $expr
+            Macros.macroenv!($env)
         end
     end)
 end
