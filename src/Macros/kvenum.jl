@@ -1,33 +1,46 @@
 
+include("macroenv.jl")
+
+const KvenumType{T<:Integer} = Typedef{T}
+
+function gen_valtype(name)
+    type = Symbol(name, "Val")
+    expr = quote
+        struct $(type){T} end
+        $(type)(x) = (Base.@_pure_meta; $(type){x}())
+
+        head(::$(type)) = :unknown
+        express(@nospecialize(e)) = Expr(head(e))
+    end
+    (name=type, expr=expr)
+end
+
 macro kvenum(T, syms...)
-    # enum = Expr(:macrocall, Symbol("@enum"), T)
+    env = @macroenv()
+
+    typedef = parsetype(env, T)
+    typename = typedef.name
+    basetype = gettype(typedef)
+
+    blk = Expr(:block)
     pairs = KvenumPairs(syms...)
-    enum = :(@enum $T)
+    enum = :(@enum $typename::$basetype)
     for (sym, T2) in pairs
         push!(enum.args, T2)
     end
-    blk = Expr(:block)
     push!(blk.args, esc(enum))
 
-    # types = :(__exprtypes = Dict($pairs))
-    # push!(blk.args, esc(types))
-
-    type = T
-    if isa(T, Expr) && T.head === :(::)
-        type = T.args[1]
-    end
-
+    valtype, valgen = gen_valtype(typename)
     for (sym, T2) in pairs
-        expr = :(Macros.head(::Macros.ExprVal{$(esc(T2))}) = $(esc(sym)))
-        push!(blk.args, expr)
+        expr = :(head(::$(valtype){$(T2)}) = $(sym))
+        push!(valgen.args, expr)
     end
+    head = :(@inline head(e::$(typename)) = head($(valtype)(e)))
+    push!(valgen.args, head)
+    push!(blk.args, esc(valgen))
 
-    head = :(@inline Macros.head(e::$(esc(type))) = Macros.head(Macros.ExprVal(e)))
-    push!(blk.args, head)
-
-    # show(pairs)
-    # nothing
     show(macroexpand(__module__, blk))
+    println()
     blk
 end
 
