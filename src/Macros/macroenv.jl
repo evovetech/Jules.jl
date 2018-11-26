@@ -2,16 +2,43 @@
 struct MacroEnv
     mod::Module
     src::LineNumberNode
+    # TODO: key/val
 end
 eval(env::MacroEnv, e) = Core.eval(env.mod, e)
 
-macro macroenv()
-    try
-        Core.eval(__module__, :(macroenv))
-    catch
-        newenv = MacroEnv(__module__, __source__)
-        Core.eval(__module__, :(macroenv = $(newenv)))
+function getenv!(f::Function, mod::Module, key::Symbol)
+    if Base.isdefined(mod, key)
+        value = getproperty(mod, key)
+        println("getenv!($key)=$value")
+        value
+    else
+        value = f()
+        println("setenv!($key=$value)")
+        Core.eval(mod, :($key = $value))
     end
+end
+
+function macroenv!(mod::Module, src::LineNumberNode)
+    getenv!(mod, :macroenv) do
+        MacroEnv(mod, src)
+    end
+end
+macroenv!(env::MacroEnv) = macroenv!(env.mod, env.src)
+
+macro macroenv!()
+    env = MacroEnv(__module__, __source__)
+    expr = :(Macros.macroenv!($env))
+    esc(quote
+        if @isdefined __module__
+            Macros.macroenv!(__module__, __source__)
+        else
+            $expr
+        end
+    end)
+end
+
+macro getenv!()
+    @macroenv!()
 end
 
 struct Typedef{T}

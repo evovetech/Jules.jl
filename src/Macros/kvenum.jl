@@ -34,7 +34,7 @@ function gen_enum(typedef, pairs)
 end
 
 macro kvenum(T, syms...)
-    env = @macroenv()
+    env = @macroenv!()
     typedef = parsetype(env, T)
     pairs = KvenumPairs(syms...)
     enum = gen_enum(typedef, pairs)
