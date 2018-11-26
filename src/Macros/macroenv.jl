@@ -6,7 +6,12 @@ end
 eval(env::MacroEnv, e) = Core.eval(env.mod, e)
 
 macro macroenv()
-    MacroEnv(__module__, __source__)
+    try
+        Core.eval(__module__, :(macroenv))
+    catch
+        newenv = MacroEnv(__module__, __source__)
+        Core.eval(__module__, :(macroenv = $(newenv)))
+    end
 end
 
 struct Typedef{T}
