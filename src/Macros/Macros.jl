@@ -21,5 +21,6 @@ include("macroval.jl")
 include("parse.jl")
 include("kvenum.jl")
 include("enum_symbol.jl")
+include("macrocontext.jl")
 
 end
