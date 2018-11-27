@@ -1,8 +1,6 @@
-import Pkg; Pkg.activate(".")
+using Init
 
-include("_mkeval.jl")
 @mkeval("run")
 
-function __init__()
-    Pkg.activate(".")
-end
+using Jules
+using Jules.Macros

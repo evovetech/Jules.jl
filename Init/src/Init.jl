@@ -1,3 +1,7 @@
+module Init
+
+export @mkeval, mkevalfile
+
 function mkevalfile(path::AbstractString, args::Vararg{Any,N} where N)
     args = [string(a) for a in args]
     :(evalfile($path, $args))
@@ -22,3 +26,5 @@ macro mkeval(dir::AbstractString)
     end
     return top
 end
+
+end # module

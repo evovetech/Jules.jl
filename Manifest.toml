@@ -49,6 +49,11 @@ git-tree-sha1 = "161d5776ae8e585ac0b8c20fb81f17ab755b3671"
 uuid = "0862f596-cf2d-50af-8ef4-f2be67dfa83f"
 version = "0.2.1"
 
+[[Init]]
+path = "Init"
+uuid = "62f30a8c-f1dc-11e8-21d6-d70e6b0fc35f"
+version = "0.1.0"
+
 [[InteractiveUtils]]
 deps = ["LinearAlgebra", "Markdown"]
 uuid = "b77e0a4c-d291-57a0-90e8-8db25a27a240"
