@@ -2,6 +2,7 @@ module Jules
 
 include("Log/Log.jl")
 include("context.jl")
+include("functions.jl")
 include("Command/Command.jl")
 include("Macros/Macros.jl")
 

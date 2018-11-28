@@ -75,11 +75,8 @@ function macro_pushcontext!(mod::Module, src::LineNumberNode)
     ctx = ChildContext(mod, src)
     esc(quote
         if @isdefined __module__
-            if __source__ === $(ctx.src)
-                Macros.pushcontext!(__module__, $ctx)
-            else
-                Macros.macro_pushcontext!(__module__, $(ctx.src))
-            end
+            Macros.pushcontext!(__module__, __source__)
+            Macros.pushcontext!(__module__, $ctx)
         else
             Macros.pushcontext!($ctx)
         end
@@ -89,15 +86,19 @@ end
 function macro_popcontext!(mod::Module, src::LineNumberNode)
     ctx = ChildContext(mod, src)
     esc(quote
+        #= or TODO:
         if @isdefined __module__
-            if __source__ === $(ctx.src)
-                Macros.popcontext!(__module__)
-            else
-                Macros.macro_popcontext!(__module__, $(ctx.src))
-            end
+            Macros.popcontext!(__module__)
+        end
+        Macros.popcontext!($ctx)
+        =#
+        ret = if @isdefined __module__
+            Macros.popcontext!(__module__)
+            Macros.popcontext!(__module__)
         else
             Macros.popcontext!($ctx)
         end
+        @assert $(ctx.src) == $(ret.src)
     end)
 end
 
@@ -137,19 +138,19 @@ end)
 #     end
 # end
 #
-# macro getcontext1()
-#     local f = @pushcontext!(); f() do ctx
-#         esc(:($ctx))
-#     end
-# end
+macro getcontext1()
+    local f = @pushcontext!(); f() do ctx
+        esc(:($ctx))
+    end
+end
 #
-# macro getcontext2()
-#     local f = @pushcontext!(); f() do ctx
-#         esc(quote
-#             $ctx, Macros.@getcontext1()
-#         end)
-#     end
-# end
+macro getcontext2()
+    local f = @pushcontext!(); f() do ctx
+        esc(quote
+            $ctx, Macros.@getcontext1()
+        end)
+    end
+end
 #
 # macro getcontext3()
 #     @pushcontext!() do ctx

@@ -5,6 +5,8 @@ version = "0.1.0"
 
 [deps]
 ArgParse = "c7e460c6-2fb9-53a9-8c5b-16f535851c63"
+Cassette = "7057c7e9-c182-5462-911a-8362d720325c"
 Init = "62f30a8c-f1dc-11e8-21d6-d70e6b0fc35f"
 LibGit2 = "76f85450-5226-5b5a-8eaa-529ad045b433"
+MacroTools = "1914dd2f-81c6-5fcd-8719-6d5c9610ff09"
 PackageCompiler = "9b87118b-4619-50d2-8e1e-99f35a4d4d9d"
