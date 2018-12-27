@@ -21,6 +21,8 @@ struct MavenRepoDep
     dep::Dependency
     root::URI
 
-    MavenRepoDep(repo::MavenRepository, dep::Dependency) =
-        new(repo, dep, root_uri(repo, dep))
+    MavenRepoDep(
+        repo::MavenRepository,
+        dep::Dependency
+    ) = new(repo, dep, root_uri(repo, dep))
 end
