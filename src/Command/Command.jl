@@ -1,5 +1,14 @@
 module Command
 
+abstract type Parameter end
+
+mutable struct Argument <: Parameter
+
+end
+
+mutable struct Option <: Parameter
+end
+
 mutable struct Settings
 end
 

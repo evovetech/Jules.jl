@@ -6,7 +6,7 @@ struct MacroArg{T} <: MacroVal
 end
 
 struct MacroExpr <: MacroVal
-    type::MaybeExprType
+    typ::MaybeExprType
     args::Vector{MacroVal}
 end
 
@@ -16,9 +16,9 @@ MacroVal(arg) = MacroArg(arg)
 MacroVal(arg::Expr) = MacroExpr(arg)
 
 function MacroExpr(expr::Expr)
-    type = MaybeExprType(expr)
+    typ = MaybeExprType(expr)
     args = [MacroVal(arg) for arg in expr.args]
-    MacroExpr(type, args)
+    MacroExpr(typ, args)
 end
 
 function Base.show(io::IO, arg::MacroArg{T}) where {T}
@@ -33,7 +33,7 @@ end
 
 function Base.show(io::IO, expr::MacroExpr)
     indent(io)
-    print(io, "$(expr.type)(")
+    print(io, "$(expr.typ)(")
     indent(io) do io::IO
         for (i, arg) in enumerate(expr.args)
             if i > 1

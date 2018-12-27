@@ -18,10 +18,8 @@ function getenv!(f::Function, mod::Module, key::Symbol)
     end
 end
 
-function macroenv!(mod::Module, src::LineNumberNode)
-    getenv!(mod, :macroenv) do
-        MacroEnv(mod, src)
-    end
+macroenv!(mod::Module, src::LineNumberNode) = getenv!(mod, :macroenv) do
+    MacroEnv(mod, src)
 end
 macroenv!(env::MacroEnv) = macroenv!(env.mod, env.src)
 
@@ -47,9 +45,7 @@ gettype(::Type{T}) where {T} = T
 gettype(::Typedef{T}) where {T} = T
 gettype(obj) = gettype(typeof(obj))
 
-function parsetype(env::MacroEnv, typename::Symbol; basetype::DataType=Int32)
-    Typedef{basetype}(typename)
-end
+parsetype(env::MacroEnv, typename::Symbol; basetype::DataType=Int32) = Typedef{basetype}(typename)
 function parsetype(env::MacroEnv, T::Expr)
     @assert T.head == :(::)
     typename = T.args[1]

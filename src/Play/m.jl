@@ -25,18 +25,10 @@ function m(expr::Expr, level::Integer)
     end
     return str * pad(level; str="}")
 end
-function m(expr::Symbol, level::Integer)
-    pad(level) * ":$(expr)"
-end
-function m(expr::String, level::Integer)
-    pad(level) * "\"$(expr)\""
-end
-function m(expr::QuoteNode, level::Integer)
-    m(expr.value, level)
-end
-function m(expr, level::Integer)
-    pad(level) * "$(typeof(expr))[$(expr)]"
-end
+m(expr::Symbol, level::Integer) = pad(level) * ":$(expr)"
+m(expr::String, level::Integer) = pad(level) * "\"$(expr)\""
+m(expr::QuoteNode, level::Integer) = m(expr.value, level)
+m(expr, level::Integer) = pad(level) * "$(typeof(expr))[$(expr)]"
 
 macro m(expr)
     str = m(expr, 0)

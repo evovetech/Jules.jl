@@ -1,6 +1,3 @@
-
-const Maybe{T} = Union{T,Nothing}
-
 abstract type MacroContext end
 
 struct ChildContext <: MacroContext

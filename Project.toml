@@ -6,6 +6,8 @@ version = "0.1.0"
 [deps]
 ArgParse = "c7e460c6-2fb9-53a9-8c5b-16f535851c63"
 Cassette = "7057c7e9-c182-5462-911a-8362d720325c"
+EzXML = "8f5d6c58-4d21-5cfd-889c-e3ad7ee6a615"
+HTTP = "cd3eb016-35fb-5094-929b-558a96fad6f3"
 Init = "62f30a8c-f1dc-11e8-21d6-d70e6b0fc35f"
 LibGit2 = "76f85450-5226-5b5a-8eaa-529ad045b433"
 MacroTools = "1914dd2f-81c6-5fcd-8719-6d5c9610ff09"
