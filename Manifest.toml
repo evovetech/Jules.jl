@@ -27,9 +27,9 @@ version = "1.0.0"
 
 [[Cassette]]
 deps = ["InteractiveUtils", "LinearAlgebra", "Test"]
-git-tree-sha1 = "03931a31f1b5c613088e02f55dd0a7458a6430c8"
+git-tree-sha1 = "6eab7f863acb75eecec5f9df3d5bb0551a63fddc"
 uuid = "7057c7e9-c182-5462-911a-8362d720325c"
-version = "0.1.3"
+version = "0.2.1"
 
 [[Compat]]
 deps = ["Base64", "Dates", "DelimitedFiles", "Distributed", "InteractiveUtils", "LibGit2", "Libdl", "LinearAlgebra", "Markdown", "Mmap", "Pkg", "Printf", "REPL", "Random", "Serialization", "SharedArrays", "Sockets", "SparseArrays", "Statistics", "Test", "UUIDs", "Unicode"]

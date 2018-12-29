@@ -11,6 +11,8 @@ include("Command/Command.jl")
 include("Macros/Macros.jl")
 include("Xml/Xml.jl")
 include("Builder/Builder.jl")
+include("Cluster/Cluster.jl")
+include("Dub/Dub.jl")
 
 #play
 include("Play/Play.jl")

@@ -1,5 +1,3 @@
-using EzXML
-
 export fromxml
 
 @generated function fromxml(::Type{T}, node::EzXML.Node) where T
