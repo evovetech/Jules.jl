@@ -28,7 +28,7 @@ function launch(manager::Manager, params::Dict, launched::Array, c::Condition)
     bind_to = `127.0.0.1`
 
     for i in 1:manager.np
-        cmd = `$(julia_cmd(exename)) $exeflags --bind-to $bind_to`
+        cmd = `$(julia_cmd(exename)) $exeflags --bind-to $bind_to --worker`
         io = open(detach(setenv(cmd, dir=dir)), "r+")
         write_cookie(io)
 
