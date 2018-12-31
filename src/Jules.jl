@@ -13,6 +13,7 @@ include("Xml/Xml.jl")
 include("Builder/Builder.jl")
 include("Cluster/Cluster.jl")
 include("Dub/Dub.jl")
+include("Msg/Msg.jl")
 
 #play
 include("Play/Play.jl")
