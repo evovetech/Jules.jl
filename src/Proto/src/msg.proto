@@ -2,5 +2,12 @@ syntax = "proto3";
 package Proto;
 
 message Msg {
-  string name = 1;
+  enum Kind {
+    PAYLOAD = 0;
+    CONTROL = 1;
+  }
+  uint32 to_id = 1;
+  uint32 from_id = 2;
+  Kind kind = 3;
+  bytes data = 4;
 }
