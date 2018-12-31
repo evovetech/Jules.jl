@@ -14,6 +14,7 @@ include("Builder/Builder.jl")
 include("Cluster/Cluster.jl")
 include("Dub/Dub.jl")
 include("Msg/Msg.jl")
+include("Proto/Proto.jl")
 
 #play
 include("Play/Play.jl")
