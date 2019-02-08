@@ -1,6 +1,5 @@
-export
-    BROKER_SUB_PORT,
-    BROKER_PUB_PORT
 
-const BROKER_SUB_PORT = 8100
-const BROKER_PUB_PORT = 8101
+const FRONTEND_ADDR = "ipc://frontend.ipc"
+const BACKEND_ADDR = "ipc://backend.ipc"
+
+export FRONTEND_ADDR, BACKEND_ADDR

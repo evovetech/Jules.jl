@@ -1,16 +1,17 @@
 
 
 function _show_expr(expr)
-    println("show_expr(")
     println("$expr")
-    println(")")
     return expr
 end
 show_expr(expr) = _show_expr(expr)
 
 function show_expr(expr::Expr)
     if expr.head === :block
-        return show_expr(expr.args)
+        for e in expr.args
+            show_expr(e)
+        end
+        return expr.args
     end
     return _show_expr(expr)
 end
@@ -26,6 +27,9 @@ function show_expr(expr...)
     return out
 end
 
-macro show_expr(expr::Expr)
-    return show_expr(expr)
+macro show_expr(expr...)
+    println("show_expr(")
+    ret = show_expr(expr...)
+    println(")")
+    return ret
 end

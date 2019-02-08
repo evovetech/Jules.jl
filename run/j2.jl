@@ -27,9 +27,14 @@ end
 end
 
 @show_expr begin
-    @mhomie function homie2()
+    @mhomie function homie2(name::String)
         return "homie"
     end
+end
+
+@show_expr:,
+function sayman(say::String)
+    println("sayman")
 end
 
 v = v"1.3.4"

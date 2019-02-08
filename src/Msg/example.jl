@@ -1,11 +1,4 @@
-# This file was formerly a part of Julia. License is MIT: https://julialang.org/license
-
-# the 0mq clustermanager depends on package ZMQ. For testing purposes, at least
-# make sure the code loads without it.
-try
-    using ZMQ
-end
-
+using ZMQ
 using Distributed
 import Distributed: launch, manage, connect, kill
 

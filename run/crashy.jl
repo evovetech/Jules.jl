@@ -38,21 +38,20 @@ function Base.show(io::IO, ex::Exception)
     end
 end
 
-
 function parse_exception(io::IO, msg::AbstractString)
     cause = nothing
-    lines = []
+    traces = Trace[]
     while !eof(io)
         line = readline(io)
-        m = match(RLINE, line)
-        if m === nothing
-            cause = parse_exception(io, line)
-        else
-            trace = Trace(m.captures[1])
-            push!(lines, trace)
+        if (m = match(RLINE, line); m !== nothing)
+            push!(traces, Trace(m.captures[1]))
+            continue
         end
+
+        cause = parse_exception(io, line)
+        break
     end
-    Exception(msg, cause, tuple(lines...))
+    Exception(msg, cause, tuple(traces...))
 end
 parse_exception(io::IO) = parse_exception(io, readline(io))
 parse_exception(file::AbstractString) = open(file) do io
