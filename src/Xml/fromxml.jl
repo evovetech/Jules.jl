@@ -55,13 +55,13 @@ function fromxml_impl(::Type{T}, node::Type{EzXML.Node}) where T
     names = fieldnames(T)
     types = T.types
 
-    ex = :( [] )
+    ex = Expr(:tuple)
     for i in eachindex(types)
         fname = names[i]
         fnode = :( firstchild($(string(fname)), node) )
 
         ftype = types[i]
-        ex = :( push!($ex, fromxml($ftype, $fnode)) )
+        push!(ex.args, :( fromxml($ftype, $fnode) ))
     end
     :( show(node); println(); T($ex...) )
 end

@@ -5,7 +5,7 @@ export indent, showargs
 function indent(io::IO)
     level = get(io, :level, 0)
     for i in 1:level
-        print(io, "| ")
+        print(io, "  ")
     end
 end
 

@@ -12,6 +12,14 @@ end
 @t2 function sayman3()
 end
 
+@t2(
+@t2[
+function sayman4()
+end,
+@t2 function sayman5()
+end
+])
+
 function main(args::Vector{String})
     println("main >>>")
     for i in eachindex(args)

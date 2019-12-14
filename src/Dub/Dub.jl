@@ -9,62 +9,63 @@ using Cassette:
 
 export
     Ctx,
-    dub
+    dub,
+    @dub
 
 @context Ctx
 
 const Meta = Dict{Symbol, IO}
+const MetaCtx = Ctx{<:Meta}
 
-function dub(args...)
-    meta = Meta(:io=>Base.stdout)
-    return overdub(Ctx(metadata=meta), args...)
+function dub(f, args...)
+    overdub(Ctx(), f, args...)
+end
+
+macro dub(expr)
+    ctx = Ctx()
+    ex = esc(expr)
+    quote
+        @Cassette.overdub($ctx, $ex)
+    end
 end
 
 function Cassette.overdub(ctx::Ctx, f, args...)
-    io = get(ctx.metadata, :io, Base.stdout)
-    recurse = Cassette.canrecurse(ctx, f, args...) && !isprint(f)
+    io = Base.stdout
+    print(io, f, args)
+    newctx = Cassette.similarcontext(ctx; metadata=Meta(:io=>io))
+    ret = Cassette.overdub(newctx, f, args...)
+    print(io, "-->")
+    return ret
+end
 
-    _prehook(io, f, args)
-    if !recurse
+function Cassette.prehook(ctx::MetaCtx, f, args...)
+    io = ctx.metadata[:io]
+    println(io)
+    indent(io)
+    print(io, f, args)
+end
+
+function Cassette.overdub(ctx::MetaCtx, f, args...)
+    io = ctx.metadata[:io]
+    if !Cassette.canrecurse(ctx, f, args...)
         ret = Cassette.fallback(ctx, f, args...)
-        print(io, "--->", typeof(ret))
-        println(io)
+#         println(io)
         return ret
     end
-
-    println(io)
+    
     ret = indent(io) do io::IO
         newctx = Cassette.similarcontext(ctx; metadata=Meta(:io=>io))
         Cassette.recurse(newctx, f, args...)
     end
-    indent(io)
-    _posthook(io, f, ret)
     println(io)
-    ret
-end
-
-isprint(f) = f in (print, println)
-function _prehook(io::IO, f, args)
-    # isprint(f) && return
-
     indent(io)
-    printfunc(io, f, args...)
-end
-function _posthook(io::IO, f, ret)
-    # isprint(f) || print(io, "-->", typeof(ret))
-    print(io, "|--->", typeof(ret))
-    ret
+    return ret
 end
 
-@generated function printfunc(io::IO, f, args...)
-    types = []
-    for T in args
-        push!(types, T)
-    end
-    types = tuple(types...)
-    quote
-        print(io, f, $types)
-    end
+function Cassette.posthook(ctx::MetaCtx, output, f, args...)
+    io = ctx.metadata[:io]
+#     indent(io)
+    print(io, "-->", repr(output))
 end
 
 end
